@@ -1,7 +1,5 @@
 <?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,9 +38,12 @@ if (session_status() == PHP_SESSION_NONE) {
                         <a class="nav-link" href="sertificat.php">Cертификаты</a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="make_an_appointment.php">Запись</a>
-                    </li>
+                    <!-- Запись: показываем только если пользователь НЕ админ -->
+                    <?php if(!isset($_SESSION['user_role']) || $_SESSION['user_role'] != 'admin'): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="make_an_appointment.php">Запись</a>
+                        </li>
+                    <?php endif; ?>
                     
                     <?php if(isset($_SESSION['user_id'])): ?>
                         <?php if($_SESSION['user_role'] == 'client'): ?>

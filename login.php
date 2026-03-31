@@ -28,7 +28,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_SESSION['user_role'] = $user['role'];
                 $_SESSION['user_phone'] = $user['phone'];
                 
-                header("Location: index.php");
+                header("Location: make_an_appointment.php");
                 exit();
             } else {
                 $error = "Неверный пароль";

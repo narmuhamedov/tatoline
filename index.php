@@ -1,8 +1,10 @@
-<?php header('Content-Type: text/html; charset=utf-8'); ?>
-<!-- Подключение header -навигационную панель сайта -->
-<?php  include ('layouts/header.php');  
-
+<?php
+// НЕ НАДО session_start() ЗДЕСЬ, ОН УЖЕ ЕСТЬ В header.php
+header('Content-Type: text/html; charset=utf-8');
 ?>
+<!-- Подключение header -навигационную панель сайта -->
+<?php include ('layouts/header.php'); ?>
+
 <!-- Контент -->
 <?php include ("db.php");  ?>
 
@@ -33,11 +35,7 @@
             </div>', $myrow['title'], $myrow['description']);
         } while ($myrow=mysqli_fetch_array($result));
         
-        
         ?>
-
-
-          
 
         </div>
     </main>
@@ -103,7 +101,6 @@ while($myrow_tatoo = mysqli_fetch_array($result_tatoo)) {
 }
 ?>
                
-
                 </tbody>
             </table>
         </div>
@@ -120,7 +117,6 @@ while($myrow_tatoo = mysqli_fetch_array($result_tatoo)) {
             </div>
         </div>
     </section>
-
 
 <!-- Подключение footer -подвала сайта -->
  <?php include ("layouts/footer.php"); ?>

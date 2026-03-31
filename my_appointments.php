@@ -26,34 +26,56 @@ include "layouts/header.php";
     <?php endif; ?>
     
     <?php if(mysqli_num_rows($result) > 0): ?>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Дата</th>
-                    <th>Мастер</th>
-                    <th>Описание</th>
-                    <th>Статус</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while($row = mysqli_fetch_assoc($result)): ?>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td><?php echo date('d.m.Y H:i', strtotime($row['created_at'])); ?></td>
-                        <td><?php echo $row['master'] ?: 'Не указан'; ?></td>
-                        <td><?php echo $row['message'] ?: 'Без описания'; ?></td>
-                        <td>
-                            <?php
-                            $status_class = '';
-                            if($row['status'] == 'new') $status_class = 'badge bg-warning';
-                            elseif($row['status'] == 'confirmed') $status_class = 'badge bg-success';
-                            else $status_class = 'badge bg-secondary';
-                            ?>
-                            <span class="<?php echo $status_class; ?>"><?php echo $row['status']; ?></span>
-                        </td>
+                        <th>Дата</th>
+                        <th>Мастер</th>
+                        <th>Описание</th>
+                        <th>Статус</th>
+                        <th>Сообщение от администратора</th>
                     </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php while($row = mysqli_fetch_assoc($result)): ?>
+                        <tr>
+                            <td><?php echo date('d.m.Y H:i', strtotime($row['created_at'])); ?></td>
+                            <td><?php echo $row['master'] ?: 'Не указан'; ?></td>
+                            <td><?php echo $row['message'] ?: 'Без описания'; ?></td>
+                            <td>
+                                <?php
+                                $status_text = '';
+                                $status_class = '';
+                                if($row['status'] == 'new') {
+                                    $status_text = 'Новая';
+                                    $status_class = 'warning';
+                                } elseif($row['status'] == 'confirmed') {
+                                    $status_text = 'Подтверждена';
+                                    $status_class = 'success';
+                                } else {
+                                    $status_text = 'Выполнена';
+                                    $status_class = 'secondary';
+                                }
+                                ?>
+                                <span class="badge bg-<?php echo $status_class; ?>"><?php echo $status_text; ?></span>
+                            </td>
+                            <td>
+                                <?php if(!empty($row['admin_message'])): ?>
+                                    <div class="alert alert-info mb-0" style="padding: 10px;">
+                                        <i class="bi bi-envelope"></i> 
+                                        <strong>Сообщение от администратора:</strong><br>
+                                        <?php echo nl2br(htmlspecialchars($row['admin_message'])); ?>
+                                    </div>
+                                <?php else: ?>
+                                    <span class="text-muted">Нет сообщений</span>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
     <?php else: ?>
         <div class="alert alert-info">
             У вас пока нет записей. <a href="make_an_appointment.php">Записаться на прием</a>
